@@ -1,0 +1,8 @@
+﻿@* Leem os data-val-* que o Razor gera a partir dos DataAnnotations: a mesma
+   declaração valida no navegador e no servidor. *@
+<script src="~/lib/jquery-validation/jquery.validate.min.js"
+        asp-fallback-src="https://cdn.jsdelivr.net/npm/jquery-validation@1.20.1/dist/jquery.validate.min.js"
+        asp-fallback-test="window.jQuery && window.jQuery.validator"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+        asp-fallback-src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"
+        asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"></script>

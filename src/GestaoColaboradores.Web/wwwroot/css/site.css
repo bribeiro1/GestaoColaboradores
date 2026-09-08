@@ -1,0 +1,389 @@
+﻿/* ==========================================================================
+   Gestao de Colaboradores - folha de estilo da aplicacao
+
+   O Bootstrap entra como base de grid e componentes; esta folha define a
+   identidade visual por cima dele, via custom properties. O objetivo e uma
+   tela que pareca um sistema corporativo real e nao um template padrao -
+   sem introduzir um framework de design adicional para isso.
+   ========================================================================== */
+
+:root {
+    --cor-fundo: #f5f6f8;
+    --cor-superficie: #ffffff;
+    --cor-borda: #e3e6ea;
+    --cor-borda-forte: #d3d8de;
+
+    --cor-texto: #1f2933;
+    --cor-texto-suave: #667381;
+
+    --cor-primaria: #1f4e79;
+    --cor-primaria-escura: #163a5a;
+    --cor-primaria-clara: #eaf1f8;
+
+    --cor-sucesso: #1b7f4f;
+    --cor-sucesso-clara: #e7f4ed;
+    --cor-neutra: #6b7684;
+    --cor-neutra-clara: #eef0f2;
+    --cor-perigo: #b3261e;
+    --cor-perigo-clara: #fdecea;
+
+    --raio: 10px;
+    --sombra: 0 1px 2px rgba(16, 24, 40, .04), 0 4px 12px rgba(16, 24, 40, .05);
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: .938rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------- Estrutura ---------- */
+
+.app-header {
+    background: linear-gradient(90deg, #1b3f61 0%, #2a5f8f 100%);
+    padding: .875rem 0;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, .12);
+}
+
+.app-brand {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.06rem;
+    letter-spacing: .01em;
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+}
+
+.app-brand:hover { color: #dce8f3; }
+.app-brand i { font-size: 1.2rem; opacity: .9; }
+
+.app-main {
+    flex: 1 0 auto;
+    padding-top: 1.75rem;
+    padding-bottom: 2.5rem;
+    max-width: 1120px;
+}
+
+.app-footer {
+    flex-shrink: 0;
+    border-top: 1px solid var(--cor-borda);
+    background: var(--cor-superficie);
+    color: var(--cor-texto-suave);
+    font-size: .8rem;
+    padding: .9rem 0;
+    text-align: center;
+}
+
+/* ---------- Cabecalho de pagina ---------- */
+
+.page-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.page-head h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.page-head p {
+    color: var(--cor-texto-suave);
+    font-size: .875rem;
+    margin: .2rem 0 0;
+}
+
+/* ---------- Cards ---------- */
+
+.card-app {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+.card-app + .card-app { margin-top: 1.25rem; }
+
+/*
+   O .card-body do Bootstrap calcula o proprio padding a partir de
+   --bs-card-spacer-x/y, que sao declaradas dentro de .card. Como aqui o
+   container e .card-app (classe propria), essas variaveis nao existem e o
+   padding resolvia para vazio - o conteudo encostava na borda.
+   Declarar as variaveis no .card-app resolve na origem, e vale tambem para
+   qualquer outro componente do Bootstrap aninhado que dependa delas.
+*/
+.card-app {
+    --bs-card-spacer-x: 1.5rem;
+    --bs-card-spacer-y: 1.5rem;
+}
+
+.card-app > .card-body {
+    padding: 1.5rem;
+}
+
+@media (max-width: 576px) {
+    .card-app > .card-body { padding: 1.15rem; }
+}
+
+.card-app > .card-head {
+    padding: .85rem 1.5rem;
+    border-bottom: 1px solid var(--cor-borda);
+    font-weight: 600;
+    font-size: .875rem;
+    color: var(--cor-texto-suave);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* ---------- Formularios ---------- */
+
+.form-label {
+    font-weight: 600;
+    font-size: .82rem;
+    color: var(--cor-texto);
+    margin-bottom: .3rem;
+}
+
+.form-control, .form-select {
+    border-color: var(--cor-borda-forte);
+    border-radius: 8px;
+    font-size: .906rem;
+    padding: .5rem .7rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(31, 78, 121, .12);
+}
+
+.form-control.input-validation-error,
+.form-select.input-validation-error {
+    border-color: var(--cor-perigo);
+    background-color: #fffafa;
+}
+
+.field-validation-error {
+    color: var(--cor-perigo);
+    font-size: .8rem;
+    display: block;
+    margin-top: .3rem;
+}
+
+.form-hint {
+    color: var(--cor-texto-suave);
+    font-size: .78rem;
+    margin-top: .3rem;
+}
+
+.input-group-text {
+    background: var(--cor-neutra-clara);
+    border-color: var(--cor-borda-forte);
+    color: var(--cor-texto-suave);
+    font-size: .875rem;
+}
+
+/* ---------- Botoes ---------- */
+
+.btn { border-radius: 8px; font-size: .875rem; font-weight: 500; padding: .48rem .95rem; }
+
+.btn-primary {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--cor-primaria-escura);
+    border-color: var(--cor-primaria-escura);
+}
+
+.btn-outline-secondary {
+    color: var(--cor-texto-suave);
+    border-color: var(--cor-borda-forte);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--cor-neutra-clara);
+    border-color: var(--cor-borda-forte);
+    color: var(--cor-texto);
+}
+
+/* Botao apenas com icone: sem rotulo textual, precisa de mais peso visual
+   para nao ser confundido com um controle desabilitado. */
+.btn-icone {
+    color: var(--cor-primaria);
+    border-color: var(--cor-borda-forte);
+    background: var(--cor-superficie);
+    min-width: 42px;
+}
+
+.btn-icone:hover {
+    background: var(--cor-primaria-clara);
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria-escura);
+}
+
+/* Botoes de acao dentro do grid */
+.btn-acao {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--cor-texto-suave);
+    border-radius: 7px;
+    padding: .3rem .48rem;
+    line-height: 1;
+    transition: background-color .12s ease, color .12s ease;
+}
+
+.btn-acao:hover { background: var(--cor-neutra-clara); color: var(--cor-texto); }
+.btn-acao.acao-editar:hover { background: var(--cor-primaria-clara); color: var(--cor-primaria); }
+.btn-acao.acao-excluir:hover { background: var(--cor-perigo-clara); color: var(--cor-perigo); }
+.btn-acao:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ---------- Tabela ---------- */
+
+.tabela-app { margin-bottom: 0; }
+
+.tabela-app > thead > tr > th {
+    background: #fafbfc;
+    padding-left: 1.5rem;
+    border-bottom: 1px solid var(--cor-borda);
+    color: var(--cor-texto-suave);
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: .75rem 1rem;
+    white-space: nowrap;
+}
+
+.tabela-app > thead > tr > th:last-child,
+.tabela-app > tbody > tr > td:last-child { padding-right: 1.5rem; }
+
+.tabela-app > tbody > tr > td:first-child { padding-left: 1.5rem; }
+
+.tabela-app > tbody > tr > td {
+    padding: .8rem 1rem;
+    border-bottom: 1px solid var(--cor-borda);
+    vertical-align: middle;
+}
+
+.tabela-app > tbody > tr:last-child > td { border-bottom: 0; }
+.tabela-app > tbody > tr:hover { background: #fafbfd; }
+
+.col-numerica { text-align: right; font-variant-numeric: tabular-nums; }
+.col-acoes { text-align: right; white-space: nowrap; }
+
+.nome-usuario { font-weight: 500; }
+
+/* ---------- Badges de situacao ---------- */
+
+.badge-situacao {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .25rem .6rem;
+    border-radius: 999px;
+}
+
+.badge-situacao::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.badge-ativo { background: var(--cor-sucesso-clara); color: var(--cor-sucesso); }
+.badge-inativo { background: var(--cor-neutra-clara); color: var(--cor-neutra); }
+
+/* ---------- Estados: carregando, vazio, erro ---------- */
+
+.estado-bloco {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--cor-texto-suave);
+}
+
+.estado-bloco i { font-size: 2.4rem; opacity: .35; display: block; margin-bottom: .75rem; }
+.estado-bloco h2 { font-size: 1rem; font-weight: 600; color: var(--cor-texto); margin-bottom: .35rem; }
+.estado-bloco p { font-size: .875rem; margin-bottom: 1rem; }
+
+/* Skeleton: mantem a altura da tabela estavel enquanto o AJAX responde,
+   evitando o "pulo" de layout que uma spinner centralizada provoca. */
+.skeleton-linha {
+    height: 14px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #edeff2 25%, #f6f7f9 50%, #edeff2 75%);
+    background-size: 200% 100%;
+    animation: skeleton 1.3s ease-in-out infinite;
+}
+
+@keyframes skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-linha { animation: none; }
+}
+
+/* ---------- Rodape do grid ---------- */
+
+.grid-rodape {
+    border-top: 1px solid var(--cor-borda);
+    padding: .8rem 1.5rem;
+    font-size: .8rem;
+    color: var(--cor-texto-suave);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+/* ---------- Toasts ---------- */
+
+.toast { border: 0; border-radius: 9px; box-shadow: 0 8px 24px rgba(16, 24, 40, .16); }
+.toast .toast-body { font-size: .875rem; display: flex; align-items: center; gap: .55rem; }
+
+/* ---------- Diversos ---------- */
+
+.linha-saindo { opacity: .35; transition: opacity .18s ease; }
+
+.obrigatorio::after { content: " *"; color: var(--cor-perigo); font-weight: 700; }
+
+/* Barra de acoes do formulario: separada do conteudo e com respiro proprio. */
+.form-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: .6rem;
+    border-top: 1px solid var(--cor-borda);
+    margin: 1.5rem -1.5rem -1.5rem;
+    padding: 1.15rem 1.5rem;
+    background: #fbfcfd;
+    border-bottom-left-radius: var(--raio);
+    border-bottom-right-radius: var(--raio);
+}
+
+@media (max-width: 576px) {
+    .form-acoes { margin: 1.25rem -1.15rem -1.15rem; padding: 1rem 1.15rem; }
+}
+
+@media (max-width: 576px) {
+    .page-head { flex-direction: column; align-items: stretch; }
+    .app-main { padding-top: 1.25rem; }
+}

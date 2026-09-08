@@ -1,0 +1,90 @@
+﻿@model SalvarUsuarioRequest
+@{
+    var edicao = !Model.EhNovo;
+    ViewData["Title"] = edicao ? "Editar usuário" : "Novo usuário";
+}
+
+@* Tela 2: cadastrar e editar. Renderizado a partir de SalvarUsuarioRequest,
+   o que faz o Razor emitir os data-val-* dos DataAnnotations. O envio é por
+   jQuery.ajax e os erros do servidor são aplicados campo a campo. *@
+
+<div class="page-head">
+    <div>
+        <h1>@(edicao ? "Editar usuário" : "Novo usuário")</h1>
+        <p>
+            @(edicao
+                ? "Altere os dados e salve para confirmar."
+                : "Preencha os dados abaixo para cadastrar um novo usuário.")
+        </p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="card-app mx-auto" style="max-width: 720px;">
+    <div class="card-head">
+        <i class="bi bi-person-vcard"></i> Dados do usuário
+    </div>
+    <div class="card-body">
+        <form id="formUsuario" novalidate>
+            @* Define se a operação será POST ou PUT. *@
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" id="resumoErros"></div>
+
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label obrigatorio"></label>
+                <input asp-for="Nome" class="form-control" autocomplete="off"
+                       placeholder="Nome completo do usuário" autofocus />
+                <span asp-validation-for="Nome" class="field-validation-error"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-6 mb-3">
+                    <label asp-for="ValorHora" class="form-label obrigatorio"></label>
+                    <div class="input-group">
+                        <span class="input-group-text">R$</span>
+                        @* Texto e não number: input[type=number] usa o separador
+                           decimal do navegador, que pode divergir da cultura
+                           da aplicação. *@
+                        <input asp-for="ValorHora" class="form-control" type="text"
+                               inputmode="decimal" autocomplete="off"
+                               placeholder="0,00" id="campoValorHora" />
+                    </div>
+                    <span asp-validation-for="ValorHora" class="field-validation-error"></span>
+                    <div class="form-hint">Valor da hora de trabalho, em reais.</div>
+                </div>
+
+                <div class="col-12 col-sm-6 mb-3">
+                    <label asp-for="DataCadastro" class="form-label obrigatorio"></label>
+                    <input asp-for="DataCadastro" class="form-control" type="date" />
+                    <span asp-validation-for="DataCadastro" class="field-validation-error"></span>
+                    <div class="form-hint">Não pode ser uma data futura.</div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check form-switch">
+                    <input asp-for="Ativo" class="form-check-input" type="checkbox" role="switch" />
+                    <label asp-for="Ativo" class="form-check-label"></label>
+                </div>
+                <div class="form-hint">
+                    Usuários inativos permanecem cadastrados, mas ficam sinalizados na consulta.
+                </div>
+            </div>
+
+            <div class="form-acoes">
+                <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                <button type="submit" class="btn btn-primary" id="btnSalvar">
+                    <i class="bi bi-check-lg"></i> Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/usuarios-form.js" asp-append-version="true"></script>
+}

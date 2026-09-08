@@ -1,0 +1,174 @@
+@GestaoColaboradores_HostAddress = https://localhost:7189
+
+###############################################################################
+# Chamadas prontas para os endpoints da API.
+#
+# Este arquivo roda DENTRO do Visual Studio 2022+ e do VS Code (extensao REST
+# Client): basta clicar em "Send request" acima de cada bloco. Nao exige
+# Postman, curl nem qualquer ferramenta externa.
+#
+# Complementa a documentacao OpenAPI:
+#   https://localhost:7189/scalar             interface para explorar a API
+#   https://localhost:7189/openapi/v1.json    o documento em si
+#
+# ATENCAO - antiforgery: os verbos que alteram estado (POST/PUT/PATCH/DELETE)
+# sao protegidos por AutoValidateAntiforgeryToken e exigem o header
+# RequestVerificationToken. Pela tela isso e transparente (o JavaScript le o
+# token do layout), mas em chamada direta o token nao existe e a resposta sera
+# HTTP 400. Para testar por aqui, comente temporariamente o filtro global no
+# Program.cs. Esse atrito e a protecao funcionando: sem ele, qualquer site
+# conseguiria disparar uma exclusao usando o cookie do usuario logado.
+###############################################################################
+
+
+### Listar todos os usuarios
+GET {{GestaoColaboradores_HostAddress}}/api/usuarios
+Accept: application/json
+
+### Listar filtrando por parte do nome
+GET {{GestaoColaboradores_HostAddress}}/api/usuarios?nome=ana
+Accept: application/json
+
+### Listar somente os ativos
+GET {{GestaoColaboradores_HostAddress}}/api/usuarios?ativo=true
+Accept: application/json
+
+### Listar somente os inativos
+GET {{GestaoColaboradores_HostAddress}}/api/usuarios?ativo=false
+Accept: application/json
+
+### Obter um usuario especifico
+GET {{GestaoColaboradores_HostAddress}}/api/usuarios/1
+Accept: application/json
+
+### Obter um usuario inexistente -> 404 com ProblemDetails
+GET {{GestaoColaboradores_HostAddress}}/api/usuarios/99999
+Accept: application/json
+
+
+###############################################################################
+# Escrita
+###############################################################################
+
+### Criar um usuario -> 201 Created
+POST {{GestaoColaboradores_HostAddress}}/api/usuarios
+Content-Type: application/json
+
+{
+  "id": 0,
+  "nome": "Fernanda Ribeiro Castro",
+  "valorHora": 275.90,
+  "dataCadastro": "2026-06-10",
+  "ativo": true
+}
+
+### Criar com nome ja existente -> 409 Conflict
+POST {{GestaoColaboradores_HostAddress}}/api/usuarios
+Content-Type: application/json
+
+{
+  "id": 0,
+  "nome": "Ana Carolina Souza",
+  "valorHora": 100.00,
+  "dataCadastro": "2026-06-10",
+  "ativo": true
+}
+
+### Criar com nome curto demais -> 400 com o dicionario "errors" por campo
+POST {{GestaoColaboradores_HostAddress}}/api/usuarios
+Content-Type: application/json
+
+{
+  "id": 0,
+  "nome": "Jo",
+  "valorHora": 100.00,
+  "dataCadastro": "2026-06-10",
+  "ativo": true
+}
+
+### Criar com data futura -> 400 vindo da invariante de dominio
+POST {{GestaoColaboradores_HostAddress}}/api/usuarios
+Content-Type: application/json
+
+{
+  "id": 0,
+  "nome": "Teste Data Futura",
+  "valorHora": 100.00,
+  "dataCadastro": "2099-01-01",
+  "ativo": true
+}
+
+### Criar com valor negativo -> 400
+POST {{GestaoColaboradores_HostAddress}}/api/usuarios
+Content-Type: application/json
+
+{
+  "id": 0,
+  "nome": "Teste Valor Negativo",
+  "valorHora": -50.00,
+  "dataCadastro": "2026-06-10",
+  "ativo": true
+}
+
+### Atualizar um usuario -> 200
+PUT {{GestaoColaboradores_HostAddress}}/api/usuarios/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "nome": "Ana Carolina Souza",
+  "valorHora": 199.99,
+  "dataCadastro": "2026-01-15",
+  "ativo": true
+}
+
+### Atualizar um usuario inexistente -> 404
+PUT {{GestaoColaboradores_HostAddress}}/api/usuarios/99999
+Content-Type: application/json
+
+{
+  "id": 99999,
+  "nome": "Nao Existe",
+  "valorHora": 100.00,
+  "dataCadastro": "2026-01-15",
+  "ativo": true
+}
+
+### Inativar (PATCH parcial, nao substitui o recurso) -> 200
+PATCH {{GestaoColaboradores_HostAddress}}/api/usuarios/2/situacao
+Content-Type: application/json
+
+{
+  "ativo": false
+}
+
+### Reativar -> 200
+PATCH {{GestaoColaboradores_HostAddress}}/api/usuarios/2/situacao
+Content-Type: application/json
+
+{
+  "ativo": true
+}
+
+### Excluir fisicamente -> 204 No Content
+DELETE {{GestaoColaboradores_HostAddress}}/api/usuarios/5
+
+### Excluir o que ja foi excluido -> 404
+DELETE {{GestaoColaboradores_HostAddress}}/api/usuarios/5
+
+
+###############################################################################
+# Precisao decimal
+###############################################################################
+
+### Grava com mais de duas casas -> a entidade arredonda para decimal(18,2)
+POST {{GestaoColaboradores_HostAddress}}/api/usuarios
+Content-Type: application/json
+
+{
+  "id": 0,
+  "nome": "Teste Arredondamento",
+  "valorHora": 10.005,
+  "dataCadastro": "2026-06-10",
+  "ativo": true
+}

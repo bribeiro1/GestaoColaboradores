@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>GestaoColaboradores.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GestaoColaboradores.Domain\GestaoColaboradores.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Apenas as abstracoes de DI, para expor o AddApplication().
+         Nao referencia o container concreto. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+</Project>

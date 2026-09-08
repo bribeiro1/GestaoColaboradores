@@ -1,0 +1,65 @@
+# =============================================================================
+# docker-compose.yml
+#
+# Objetivo: remover o "nao consigo rodar porque nao tenho SQL Server" da
+# frente de quem for avaliar o projeto. Um comando sobe o banco ja
+# configurado, sem instalar nada na maquina.
+#
+#   Somente o banco (recomendado - a aplicacao roda pelo Visual Studio):
+#       docker compose up -d sqlserver
+#
+#   Banco + aplicacao:
+#       docker compose --profile completo up -d
+#
+# Nota para Apple Silicon: a imagem do SQL Server nao possui build ARM64.
+# Nesse caso, troque a imagem por mcr.microsoft.com/azure-sql-edge:latest.
+# =============================================================================
+
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gestaocolaboradores-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Str0ng!Passw0rd"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - dados-sqlserver:/var/opt/mssql
+    healthcheck:
+      # A aplicacao so deve iniciar depois que o banco aceitar conexoes.
+      # Sem o healthcheck, o container da app sobe antes e falha na primeira
+      # tentativa de conexao - o classico "funciona no segundo docker up".
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+
+  app:
+    # Sob profile: nao sobe no "docker compose up" padrao, apenas com
+    # --profile completo. Mantem o cenario mais comum (rodar pelo VS
+    # contra o banco em container) como o caminho de menor atrito.
+    profiles: ["completo"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gestaocolaboradores-app
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_HTTP_PORTS: "8080"
+      # Dentro da rede do compose, o host do banco e o NOME DO SERVICO.
+      ConnectionStrings__SqlServer: "Server=sqlserver,1433;Database=GestaoColaboradores;User Id=sa;Password=Str0ng!Passw0rd;TrustServerCertificate=True;Encrypt=True"
+      Banco__AplicarMigrationsNoStartup: "true"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  dados-sqlserver:

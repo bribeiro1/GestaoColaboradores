@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Erro";
+}
+
+<div class="card-app mx-auto" style="max-width: 640px;">
+    <div class="card-body text-center p-5">
+        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+        <h1 class="h4 mt-3">Algo deu errado</h1>
+        <p class="text-secondary mb-4">
+            Não foi possível concluir a operação. O time técnico consegue localizar
+            o ocorrido pelo identificador abaixo.
+        </p>
+        <p class="mb-4">
+            <code class="user-select-all">@ViewBag.Correlacao</code>
+        </p>
+        <a class="btn btn-primary" asp-controller="Usuarios" asp-action="Index">
+            <i class="bi bi-arrow-left"></i> Voltar para a consulta
+        </a>
+    </div>
+</div>

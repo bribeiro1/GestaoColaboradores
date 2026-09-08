@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "Consulta de usuários";
+}
+
+@* Tela 1: consultar e excluir. O grid é carregado por jQuery.ajax. *@
+
+<div class="page-head">
+    <div>
+        <h1>Usuários</h1>
+        <p>Consulte, edite, ative/inative ou exclua os usuários cadastrados.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Form">
+        <i class="bi bi-plus-lg"></i> Novo usuário
+    </a>
+</div>
+
+@if (TempData["Mensagem"] is string mensagem)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle me-1"></i> @mensagem
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<div class="card-app">
+    <div class="card-head">
+        <i class="bi bi-funnel"></i> Filtros
+    </div>
+    <div class="card-body">
+        <form id="formFiltro" class="row g-3 align-items-end" onsubmit="return false;">
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="filtroNome">Nome</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="search" class="form-control" id="filtroNome"
+                           placeholder="Digite parte do nome" maxlength="150"
+                           autocomplete="off" />
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <label class="form-label" for="filtroSituacao">Situação</label>
+                <select class="form-select" id="filtroSituacao">
+                    <option value="">Todas</option>
+                    <option value="true">Somente ativos</option>
+                    <option value="false">Somente inativos</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 d-flex gap-2">
+                <button type="button" class="btn btn-primary flex-fill" id="btnFiltrar">
+                    <i class="bi bi-search"></i> Consultar
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-icone" id="btnLimparFiltro"
+                        title="Limpar filtros" aria-label="Limpar filtros">
+                    <i class="bi bi-eraser"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card-app">
+    <div class="table-responsive">
+        <table class="table tabela-app align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col" class="col-numerica">Valor/hora</th>
+                    <th scope="col">Data de cadastro</th>
+                    <th scope="col">Situação</th>
+                    <th scope="col" class="col-acoes">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabela" aria-live="polite"></tbody>
+        </table>
+    </div>
+    <div class="grid-rodape">
+        <span id="resumoRegistros">&nbsp;</span>
+        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnAtualizar">
+            <i class="bi bi-arrow-clockwise"></i> Atualizar
+        </button>
+    </div>
+</div>
+
+@* Modal e não confirm(): o nativo bloqueia a thread, não mostra qual
+   registro está sendo excluído e não exibe progresso durante o AJAX. *@
+<div class="modal fade" id="modalExclusao" tabindex="-1" aria-hidden="true"
+     aria-labelledby="tituloModalExclusao">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h6" id="tituloModalExclusao">Confirmar exclusão</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">
+                    Excluir definitivamente o usuário
+                    <strong id="nomeUsuarioExclusao"></strong>?
+                </p>
+                <p class="text-secondary small mb-0">
+                    <i class="bi bi-info-circle"></i>
+                    Esta ação remove o registro definitivamente e não pode ser desfeita.
+                    Para apenas suspender o acesso, use a opção <em>Inativar</em>.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">
+                    <i class="bi bi-trash"></i> Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/usuarios-consulta.js" asp-append-version="true"></script>
+}

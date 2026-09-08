@@ -1,0 +1,44 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.{cs,csx}]
+indent_size = 4
+csharp_new_line_before_open_brace = all
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_diagnostic.CA1062.severity = none
+
+[*.{csproj,props,targets,config,xml}]
+indent_size = 2
+
+[*.{js,css,html,cshtml,json}]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.sql]
+indent_size = 4
+
+# -----------------------------------------------------------------------------
+# Projeto de testes
+# -----------------------------------------------------------------------------
+[tests/**/*.cs]
+
+# CA1707 exige nomes de membro sem sublinhado - regra correta para uma API
+# publica, inadequada para testes. O padrao Metodo_Cenario_ResultadoEsperado
+# e convencao consolidada e faz o relatorio de falha ser legivel sem abrir o
+# codigo: "Criar_ComNomeVazio_DeveLancarDomainException" ja diz o que quebrou.
+# Desativado apenas aqui, e nao globalmente: no codigo de producao a regra vale.
+dotnet_diagnostic.CA1707.severity = none
+
+# Testes instanciam tipos e descartam resultados por design (verificando que
+# uma excecao e lancada), o que dispara avisos que nao se aplicam ao contexto.
+dotnet_diagnostic.CA1861.severity = none

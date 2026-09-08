@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    A camada de dominio nao possui NENHUMA dependencia de pacote externo.
+    Isso e proposital: garante que as regras de negocio nao estao
+    acopladas a Entity Framework, ASP.NET ou qualquer infraestrutura.
+    Se este csproj comecar a crescer, a arquitetura esta vazando.
+  -->
+  <PropertyGroup>
+    <RootNamespace>GestaoColaboradores.Domain</RootNamespace>
+  </PropertyGroup>
+
+</Project>

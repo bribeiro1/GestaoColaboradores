@@ -1,0 +1,26 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- pt-BR: a aplicacao formata moeda e data no padrao brasileiro,
+         portanto os dados de globalizacao do ICU sao obrigatorios. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+
+    <!-- Auditoria de vulnerabilidades no restore, incluindo dependencias
+         transitivas. Um pacote vulneravel raramente e o que voce declarou;
+         quase sempre e o que o seu pacote trouxe junto. Ver a secao
+         "Auditoria de dependencias" no README. -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+  </PropertyGroup>
+
+</Project>

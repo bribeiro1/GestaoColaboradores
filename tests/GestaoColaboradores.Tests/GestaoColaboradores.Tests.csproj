@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>GestaoColaboradores.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GestaoColaboradores.Domain\GestaoColaboradores.Domain.csproj" />
+    <ProjectReference Include="..\..\src\GestaoColaboradores.Application\GestaoColaboradores.Application.csproj" />
+    <ProjectReference Include="..\..\src\GestaoColaboradores.Infrastructure\GestaoColaboradores.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="coverlet.collector" />
+
+    <!-- SQLite in-memory para os testes de integracao do repositorio.
+         Escolhido no lugar do EF InMemory: o InMemory nao e um provider
+         relacional, nao valida constraints e nao traduz SQL - a propria
+         Microsoft desaconselha seu uso para testar consultas. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+  </ItemGroup>
+
+</Project>
